@@ -41,8 +41,26 @@ npm start
 
 
 ## Contribute
+Contributions are welcome! Follow these steps:
 
-You can fork this repo and send me a PR.
+1.Fork the repository.
+
+2.Create a new branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+
+3.Make your changes and commit:
+```bash
+git commit -m "Add new feature"
+```
+
+4.Push the changes:
+```bash
+git push origin feature/your-feature-name
+```
+
+5.Open a pull request.
 
 ## License
 
