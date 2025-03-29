@@ -139,3 +139,22 @@ body {
   margin: 20px 0;
   color: #7e7e7e;
 }
+.hidden {
+  display: none;
+}
+
+.screen {
+  text-align: center;
+  margin-top: 50px;
+}
+
+#username-input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+#join-chat-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
