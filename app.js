@@ -2,33 +2,47 @@ const express = require('express')
 const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 4000
-const server = app.listen(PORT, () => console.log(`💬 server on port ${PORT}`))
+const server = app.listen(PORT, () => console.log(`💬 Server on port ${PORT}`))
 
 const io = require('socket.io')(server)
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-let socketsConected = new Set()
+let socketsConnected = new Map() // Store users
 
-io.on('connection', onConnected)
+io.on('connection', (socket) => {
+    console.log('Socket connected', socket.id)
 
-function onConnected(socket) {
-  console.log('Socket connected', socket.id)
-  socketsConected.add(socket.id)
-  io.emit('clients-total', socketsConected.size)
+    // Listen for username from client
+    socket.on('user-joined', (username) => {
+        socketsConnected.set(socket.id, username)
+        io.emit('chat-message', { 
+            name: "System", 
+            message: `${username} has entered the chat.`,
+            dateTime: new Date()
+        })
+        io.emit('clients-total', socketsConnected.size)
+    })
 
-  socket.on('disconnect', () => {
-    console.log('Socket disconnected', socket.id)
-    socketsConected.delete(socket.id)
-    io.emit('clients-total', socketsConected.size)
-  })
+    socket.on('disconnect', () => {
+        let username = socketsConnected.get(socket.id) || "A user"
+        socketsConnected.delete(socket.id)
 
-  socket.on('message', (data) => {
-    // console.log(data)
-    socket.broadcast.emit('chat-message', data)
-  })
+        io.emit('chat-message', { 
+            name: "System", 
+            message: `${username} has left the chat.`,
+            dateTime: new Date()
+        })
+        io.emit('clients-total', socketsConnected.size)
 
-  socket.on('feedback', (data) => {
-    socket.broadcast.emit('feedback', data)
-  })
-}
+        console.log('Socket disconnected', socket.id)
+    })
+
+    socket.on('message', (data) => {
+        socket.broadcast.emit('chat-message', data)
+    })
+
+    socket.on('feedback', (data) => {
+        socket.broadcast.emit('feedback', data)
+    })
+})
