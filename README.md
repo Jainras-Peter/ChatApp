@@ -38,8 +38,15 @@ Step 4: Start the chat app
 ```bash
 npm start
 ```
-## Deployment Link
-    https://chatapp-prxl.onrender.com
+
+---
+
+## Deployment
+
+You can access the live app here:  
+**[ChatApp - Live Site](https://chatapp-prxl.onrender.com)**
+
+---
 ## Contribute
 Contributions are welcome! Follow these steps:
 
